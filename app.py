@@ -10,7 +10,11 @@ CORS(app)
 
 from pymongo import MongoClient
 
-client = client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient(
+    os.getenv("MONGO_URI"),
+    tls=True,
+    tlsAllowInvalidCertificates=True
+)
 db = client["finance_dashboard"]
 collection = db["transactions"]
 
