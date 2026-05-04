@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import time
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://pratyush1275_db_user:oFIMxp17RViQxuaE@cluster0.ljguklp.mongodb.net/")
+client = client = MongoClient(os.getenv("MONGO_URI"))
 db = client["finance_dashboard"]
 collection = db["transactions"]
 
@@ -37,3 +40,8 @@ def delete_transaction(id):
     global transactions
     transactions = [t for t in transactions if t["id"] != id]
     return jsonify({"message": "Deleted"})
+
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
